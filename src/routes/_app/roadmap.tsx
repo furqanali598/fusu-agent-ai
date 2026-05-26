@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { useUserStats } from "@/lib/user-stats";
 
 export const Route = createFileRoute("/_app/roadmap")({
   component: Roadmap,
@@ -19,6 +20,7 @@ type RoadmapData = { title: string; stages: Stage[] };
 
 function Roadmap() {
   const gen = useServerFn(generateRoadmap);
+  const { recordRoadmap } = useUserStats();
   const [goal, setGoal] = useState("");
   const [level, setLevel] = useState("Beginner");
   const [data, setData] = useState<RoadmapData | null>(null);
@@ -34,6 +36,7 @@ function Roadmap() {
     try {
       const r = await gen({ data: { goal, level } });
       setData(r);
+      recordRoadmap();
     } catch (e: any) {
       toast.error("Failed to generate roadmap", { description: e?.message });
     } finally {

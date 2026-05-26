@@ -1,12 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { generateQuiz } from "@/lib/ai.functions";
 import { Brain, Sparkles, Check, X, Trophy, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { skills as SKILL_CATALOG } from "@/lib/sample-data";
+import { useUserStats } from "@/lib/user-stats";
 
 export const Route = createFileRoute("/_app/quiz")({
   component: QuizPage,
@@ -14,9 +17,16 @@ export const Route = createFileRoute("/_app/quiz")({
 
 type Q = { question: string; options: string[]; correctIndex: number; explanation: string };
 
+function matchSkill(topic: string): string | undefined {
+  const t = topic.toLowerCase();
+  return SKILL_CATALOG.find((s) => t.includes(s.name.toLowerCase().split(" ")[0]))?.id;
+}
+
 function QuizPage() {
   const gen = useServerFn(generateQuiz);
+  const { recordQuiz } = useUserStats();
   const [topic, setTopic] = useState("");
+  const [skillId, setSkillId] = useState<string>("auto");
   const [count, setCount] = useState(5);
   const [questions, setQuestions] = useState<Q[] | null>(null);
   const [answers, setAnswers] = useState<Record<number, number>>({});
@@ -38,6 +48,15 @@ function QuizPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const resolvedSkillId = useMemo(() => (skillId === "auto" ? matchSkill(topic) : skillId), [skillId, topic]);
+
+  const finalize = () => {
+    if (!questions) return;
+    const correct = questions.reduce((s, q, i) => (answers[i] === q.correctIndex ? s + 1 : s), 0);
+    recordQuiz({ topic, total: questions.length, correct, relatedSkillId: resolvedSkillId });
+    setSubmitted(true);
   };
 
   const reset = () => { setQuestions(null); setAnswers({}); setSubmitted(false); setTopic(""); };
@@ -80,22 +99,34 @@ function QuizPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Brain className="text-brand-2" /> AI Quiz Generator</h1>
-        <p className="text-sm text-muted-foreground">Generate MCQs on any topic, instantly.</p>
+        <p className="text-sm text-muted-foreground">Generate MCQs on any topic. Your score updates your real progress.</p>
       </div>
 
       {!questions && (
-        <form onSubmit={submit} className="bg-card border border-border rounded-2xl p-6 grid md:grid-cols-[1fr_140px_auto] gap-4 items-end">
-          <div>
+        <form onSubmit={submit} className="bg-card border border-border rounded-2xl p-6 grid md:grid-cols-2 gap-4">
+          <div className="md:col-span-2">
             <Label>Topic</Label>
             <Input value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="e.g. Python loops, SQL joins…" className="mt-1.5 rounded-xl" />
+          </div>
+          <div>
+            <Label>Linked skill</Label>
+            <Select value={skillId} onValueChange={setSkillId}>
+              <SelectTrigger className="mt-1.5 rounded-xl"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="auto">Auto-detect from topic</SelectItem>
+                {SKILL_CATALOG.map((s) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <Label>Questions</Label>
             <Input type="number" min={3} max={10} value={count} onChange={(e) => setCount(Number(e.target.value))} className="mt-1.5 rounded-xl" />
           </div>
-          <Button type="submit" disabled={loading} className="gradient-brand text-primary-foreground border-0 rounded-xl h-10">
-            {loading ? "Generating…" : <><Sparkles className="size-4 mr-1" /> Generate</>}
-          </Button>
+          <div className="md:col-span-2">
+            <Button type="submit" disabled={loading} className="gradient-brand text-primary-foreground border-0 rounded-xl h-10 w-full md:w-auto">
+              {loading ? "Generating…" : <><Sparkles className="size-4 mr-1" /> Generate</>}
+            </Button>
+          </div>
         </form>
       )}
 
@@ -123,7 +154,7 @@ function QuizPage() {
           ))}
           <Button
             disabled={Object.keys(answers).length !== questions.length}
-            onClick={() => setSubmitted(true)}
+            onClick={finalize}
             className="w-full gradient-brand text-primary-foreground border-0 rounded-xl h-11"
           >
             Submit Quiz ({Object.keys(answers).length}/{questions.length})
