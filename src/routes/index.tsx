@@ -1,26 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Landing } from "@/components/landing";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "SkillBoost AI — Your AI mentor for future-ready skills" },
+      { name: "description", content: "Personalized learning roadmaps, AI mentor chat, and adaptive quizzes. Built for students, universities, and the workforce of tomorrow." },
+      { property: "og:title", content: "SkillBoost AI" },
+      { property: "og:description", content: "AI-powered education aligned with SDG 4 and Vision 2030/2035." },
+    ],
+  }),
+  component: Landing,
 });
-
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
-function Index() {
-  return <PlaceholderIndex />;
-}

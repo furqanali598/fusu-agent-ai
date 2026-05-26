@@ -9,38 +9,173 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRoadmapRouteImport } from './routes/_app/roadmap'
+import { Route as AppQuizRouteImport } from './routes/_app/quiz'
+import { Route as AppProgressRouteImport } from './routes/_app/progress'
+import { Route as AppMentorRouteImport } from './routes/_app/mentor'
+import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppClientRouteImport } from './routes/_app/client'
+import { Route as AppAdminRouteImport } from './routes/_app/admin'
+import { Route as AppAchievementsRouteImport } from './routes/_app/achievements'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoadmapRoute = AppRoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQuizRoute = AppQuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProgressRoute = AppProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMentorRoute = AppMentorRouteImport.update({
+  id: '/mentor',
+  path: '/mentor',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppClientRoute = AppClientRouteImport.update({
+  id: '/client',
+  path: '/client',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAchievementsRoute = AppAchievementsRouteImport.update({
+  id: '/achievements',
+  path: '/achievements',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/achievements': typeof AppAchievementsRoute
+  '/admin': typeof AppAdminRoute
+  '/client': typeof AppClientRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/mentor': typeof AppMentorRoute
+  '/progress': typeof AppProgressRoute
+  '/quiz': typeof AppQuizRoute
+  '/roadmap': typeof AppRoadmapRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/achievements': typeof AppAchievementsRoute
+  '/admin': typeof AppAdminRoute
+  '/client': typeof AppClientRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/mentor': typeof AppMentorRoute
+  '/progress': typeof AppProgressRoute
+  '/quiz': typeof AppQuizRoute
+  '/roadmap': typeof AppRoadmapRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_app/achievements': typeof AppAchievementsRoute
+  '/_app/admin': typeof AppAdminRoute
+  '/_app/client': typeof AppClientRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/mentor': typeof AppMentorRoute
+  '/_app/progress': typeof AppProgressRoute
+  '/_app/quiz': typeof AppQuizRoute
+  '/_app/roadmap': typeof AppRoadmapRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/achievements'
+    | '/admin'
+    | '/client'
+    | '/dashboard'
+    | '/mentor'
+    | '/progress'
+    | '/quiz'
+    | '/roadmap'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/achievements'
+    | '/admin'
+    | '/client'
+    | '/dashboard'
+    | '/mentor'
+    | '/progress'
+    | '/quiz'
+    | '/roadmap'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/login'
+    | '/_app/achievements'
+    | '/_app/admin'
+    | '/_app/client'
+    | '/_app/dashboard'
+    | '/_app/mentor'
+    | '/_app/progress'
+    | '/_app/quiz'
+    | '/_app/roadmap'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +183,94 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/roadmap': {
+      id: '/_app/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof AppRoadmapRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/quiz': {
+      id: '/_app/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof AppQuizRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/progress': {
+      id: '/_app/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof AppProgressRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mentor': {
+      id: '/_app/mentor'
+      path: '/mentor'
+      fullPath: '/mentor'
+      preLoaderRoute: typeof AppMentorRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/client': {
+      id: '/_app/client'
+      path: '/client'
+      fullPath: '/client'
+      preLoaderRoute: typeof AppClientRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/achievements': {
+      id: '/_app/achievements'
+      path: '/achievements'
+      fullPath: '/achievements'
+      preLoaderRoute: typeof AppAchievementsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAchievementsRoute: typeof AppAchievementsRoute
+  AppAdminRoute: typeof AppAdminRoute
+  AppClientRoute: typeof AppClientRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppMentorRoute: typeof AppMentorRoute
+  AppProgressRoute: typeof AppProgressRoute
+  AppQuizRoute: typeof AppQuizRoute
+  AppRoadmapRoute: typeof AppRoadmapRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAchievementsRoute: AppAchievementsRoute,
+  AppAdminRoute: AppAdminRoute,
+  AppClientRoute: AppClientRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppMentorRoute: AppMentorRoute,
+  AppProgressRoute: AppProgressRoute,
+  AppQuizRoute: AppQuizRoute,
+  AppRoadmapRoute: AppRoadmapRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
