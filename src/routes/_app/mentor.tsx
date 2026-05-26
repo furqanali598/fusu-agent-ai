@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
+import { useUserStats } from "@/lib/user-stats";
 
 export const Route = createFileRoute("/_app/mentor")({
   component: Mentor,
@@ -23,6 +24,7 @@ const suggestions = [
 
 function Mentor() {
   const chat = useServerFn(chatMentor);
+  const { recordMentorMessage } = useUserStats();
   const [messages, setMessages] = useState<Msg[]>([
     { role: "assistant", content: "👋 Hi! I'm your **AI Mentor**. Ask me anything about your studies — concepts, career paths, or what to learn next." },
   ]);
@@ -41,6 +43,7 @@ function Mentor() {
     try {
       const { reply } = await chat({ data: { messages: next.map(m => ({ role: m.role, content: m.content })) } });
       setMessages((m) => [...m, { role: "assistant", content: reply }]);
+      recordMentorMessage();
     } catch (e: any) {
       toast.error("AI Mentor failed", { description: e?.message?.includes("429") ? "Rate limited — try again." : e?.message?.includes("402") ? "AI credits exhausted." : "Try again." });
     } finally {
