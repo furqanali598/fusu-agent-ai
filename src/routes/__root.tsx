@@ -75,14 +75,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "SkillBoost AI" },
+      { name: "description", content: "SkillBoost AI Hub is a modern AI-powered web application for personalized learning and skill development." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "SkillBoost AI" },
+      { property: "og:description", content: "SkillBoost AI Hub is a modern AI-powered web application for personalized learning and skill development." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "SkillBoost AI" },
+      { name: "twitter:description", content: "SkillBoost AI Hub is a modern AI-powered web application for personalized learning and skill development." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/gdfo1H8v4aNCosR8CsTwCY9Y2eC2/social-images/social-1779814851169-ChatGPT_Image_May_26,_2026,_10_00_22_PM.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/gdfo1H8v4aNCosR8CsTwCY9Y2eC2/social-images/social-1779814851169-ChatGPT_Image_May_26,_2026,_10_00_22_PM.webp" },
     ],
     links: [
       {
