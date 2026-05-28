@@ -12,7 +12,7 @@ export function Landing() {
             <div className="size-9 rounded-xl gradient-brand grid place-items-center text-primary-foreground">
               <Sparkles className="size-5" />
             </div>
-            <span className="font-bold text-lg">SkillBoost <span className="text-gradient-brand">AI</span></span>
+            <span className="font-bold text-lg">FuSu <span className="text-gradient-brand">AI Agent</span></span>
           </Link>
           <div className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
             <a href="#features" className="hover:text-foreground transition">Features</a>
