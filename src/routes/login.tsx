@@ -41,7 +41,7 @@ function LoginPage() {
           <div className="size-9 rounded-xl bg-white/20 backdrop-blur grid place-items-center">
             <Sparkles className="size-5" />
           </div>
-          <span className="font-bold text-lg">SkillBoost AI</span>
+          <span className="font-bold text-lg">FuSu AI Agent</span>
         </div>
         <div>
           <h1 className="text-4xl font-bold leading-tight">
@@ -51,7 +51,7 @@ function LoginPage() {
             Your AI mentor is ready to help you master any skill — built for SDG 4 and Vision 2030/2035.
           </p>
         </div>
-        <div className="text-sm text-primary-foreground/60">© 2026 SkillBoost AI</div>
+        <div className="text-sm text-primary-foreground/60">© 2026 FuSu AI Agent</div>
         <div className="absolute -bottom-32 -right-32 size-96 rounded-full bg-white/10 blur-3xl" />
         <div className="absolute -top-32 -left-32 size-96 rounded-full bg-white/10 blur-3xl" />
       </div>
