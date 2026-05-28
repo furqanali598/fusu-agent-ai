@@ -127,7 +127,7 @@ export function Landing() {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-bold">Education that powers <span className="text-gradient-brand">national vision</span></h2>
           <p className="mt-6 text-muted-foreground text-lg">
-            SkillBoost AI advances UN SDG 4 (Quality Education) and accelerates Vision 2030/2035
+            FuSu AI Agent advances UN SDG 4 (Quality Education) and accelerates Vision 2030/2035
             workforce goals by equipping every learner with the skills of tomorrow.
           </p>
           <div className="mt-10">
@@ -141,7 +141,7 @@ export function Landing() {
       </section>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        © 2026 SkillBoost AI — Powering the next generation of learners.
+        © 2026 FuSu AI Agent — Powering the next generation of learners.
       </footer>
     </div>
   );
