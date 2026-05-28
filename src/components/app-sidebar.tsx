@@ -37,7 +37,7 @@ export function AppSidebar() {
           <div className="size-8 rounded-lg gradient-brand grid place-items-center text-primary-foreground shrink-0">
             <Sparkles className="size-4" />
           </div>
-          <span className="font-bold group-data-[collapsible=icon]:hidden">SkillBoost AI</span>
+          <span className="font-bold group-data-[collapsible=icon]:hidden">FuSu AI Agent</span>
         </Link>
       </SidebarHeader>
       <SidebarContent>
