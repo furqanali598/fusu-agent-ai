@@ -1,4 +1,38 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
+
+// Strip control characters and known prompt-injection markers before
+// interpolating user-supplied text into AI prompts.
+function sanitizePromptText(s: string): string {
+  return s
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\u0000-\u001F\u007F]/g, " ")
+    .replace(/<\|.*?\|>/g, " ")
+    .replace(/\b(system|assistant|developer)\s*:/gi, "$1_")
+    .trim();
+}
+
+const chatSchema = z.object({
+  messages: z
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string().min(1).max(4000),
+      }),
+    )
+    .min(1)
+    .max(40),
+});
+
+const roadmapSchema = z.object({
+  goal: z.string().min(2).max(200),
+  level: z.enum(["beginner", "intermediate", "advanced"]),
+});
+
+const quizSchema = z.object({
+  topic: z.string().min(2).max(200),
+  count: z.number().int().min(3).max(10),
+});
 
 const GATEWAY = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const MODEL = "google/gemini-3-flash-preview";
