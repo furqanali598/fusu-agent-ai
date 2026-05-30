@@ -110,7 +110,22 @@ function Roadmap() {
 
       {data && (
         <div>
-          <h2 className="text-xl font-bold mb-4">{data.title}</h2>
+          <div className="mb-4">
+            <h2 className="text-xl font-bold">{data.title}</h2>
+            {data.totalDuration && (
+              <p className="text-sm text-muted-foreground mt-1">Estimated duration: {data.totalDuration}</p>
+            )}
+          </div>
+
+          {data.outcomes && data.outcomes.length > 0 && (
+            <div className="bg-card border border-border rounded-2xl p-5 mb-4">
+              <h3 className="font-semibold text-sm mb-2">Expected outcomes</h3>
+              <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                {data.outcomes.map((o, i) => <li key={i}>{o}</li>)}
+              </ul>
+            </div>
+          )}
+
           <div className="relative">
             <div className="absolute left-5 top-0 bottom-0 w-px bg-border" />
             <div className="space-y-4">
@@ -127,17 +142,61 @@ function Roadmap() {
                     <div className="bg-card rounded-2xl border border-border p-5">
                       <div className="flex items-start justify-between gap-3 flex-wrap">
                         <div>
-                          <div className="text-xs text-brand-2 font-medium">Stage {i + 1}</div>
+                          <div className="text-xs text-brand-2 font-medium">Phase {i + 1}</div>
                           <h3 className="font-semibold text-lg">{s.title}</h3>
                         </div>
                         <Badge variant="secondary" className="rounded-full"><Clock className="size-3 mr-1" />{s.duration}</Badge>
                       </div>
                       <p className="text-sm text-muted-foreground mt-2">{s.description}</p>
-                      <div className="flex flex-wrap gap-1.5 mt-3">
-                        {s.skills.map((sk) => (
-                          <span key={sk} className="text-xs px-2 py-1 rounded-md bg-accent text-accent-foreground">{sk}</span>
-                        ))}
+
+                      {s.topics && s.topics.length > 0 && (
+                        <div className="mt-3">
+                          <div className="text-xs font-semibold text-foreground mb-1">Topics</div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {s.topics.map((t) => (
+                              <span key={t} className="text-xs px-2 py-1 rounded-md bg-muted text-foreground">{t}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="mt-3">
+                        <div className="text-xs font-semibold text-foreground mb-1">Skills</div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {s.skills.map((sk) => (
+                            <span key={sk} className="text-xs px-2 py-1 rounded-md bg-accent text-accent-foreground">{sk}</span>
+                          ))}
+                        </div>
                       </div>
+
+                      {s.projects && s.projects.length > 0 && (
+                        <div className="mt-3">
+                          <div className="text-xs font-semibold text-foreground mb-1">Projects</div>
+                          <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-0.5">
+                            {s.projects.map((p, j) => <li key={j}>{p}</li>)}
+                          </ul>
+                        </div>
+                      )}
+
+                      {s.milestones && s.milestones.length > 0 && (
+                        <div className="mt-3">
+                          <div className="text-xs font-semibold text-foreground mb-1">Milestones</div>
+                          <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-0.5">
+                            {s.milestones.map((m, j) => <li key={j}>{m}</li>)}
+                          </ul>
+                        </div>
+                      )}
+
+                      {s.certifications && s.certifications.length > 0 && (
+                        <div className="mt-3">
+                          <div className="text-xs font-semibold text-foreground mb-1">Certifications</div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {s.certifications.map((c) => (
+                              <span key={c} className="text-xs px-2 py-1 rounded-md border border-border">{c}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
