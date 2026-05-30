@@ -15,14 +15,36 @@ export const Route = createFileRoute("/_app/roadmap")({
   component: Roadmap,
 });
 
-type Stage = { title: string; duration: string; description: string; skills: string[] };
-type RoadmapData = { title: string; stages: Stage[] };
+type Stage = {
+  title: string;
+  duration: string;
+  description: string;
+  skills: string[];
+  topics?: string[];
+  projects?: string[];
+  milestones?: string[];
+  certifications?: string[];
+};
+type RoadmapData = {
+  title: string;
+  totalDuration?: string;
+  outcomes?: string[];
+  stages: Stage[];
+};
+
+const ALLOWED_LEVELS = ["beginner", "intermediate", "advanced"] as const;
+type Level = (typeof ALLOWED_LEVELS)[number];
+
+function normalizeLevel(v: string): Level {
+  const lc = (v ?? "").trim().toLowerCase();
+  return (ALLOWED_LEVELS as readonly string[]).includes(lc) ? (lc as Level) : "beginner";
+}
 
 function Roadmap() {
   const gen = useServerFn(generateRoadmap);
   const { recordRoadmap } = useUserStats();
   const [goal, setGoal] = useState("");
-  const [level, setLevel] = useState("Beginner");
+  const [level, setLevel] = useState<Level>("beginner");
   const [data, setData] = useState<RoadmapData | null>(null);
   const [loading, setLoading] = useState(false);
   const [completed, setCompleted] = useState<Set<number>>(new Set());
@@ -34,7 +56,7 @@ function Roadmap() {
     setData(null);
     setCompleted(new Set());
     try {
-      const r = await gen({ data: { goal, level } });
+      const r = await gen({ data: { goal: goal.trim(), level: normalizeLevel(level) } });
       setData(r);
       recordRoadmap();
     } catch (e: any) {
