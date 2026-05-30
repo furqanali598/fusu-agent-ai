@@ -25,8 +25,11 @@ const chatSchema = z.object({
 });
 
 const roadmapSchema = z.object({
-  goal: z.string().min(2).max(200),
-  level: z.enum(["beginner", "intermediate", "advanced"]),
+  goal: z.string().trim().min(2).max(200),
+  level: z
+    .string()
+    .transform((v) => v.trim().toLowerCase())
+    .pipe(z.enum(["beginner", "intermediate", "advanced"])),
 });
 
 const quizSchema = z.object({
